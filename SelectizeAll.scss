@@ -1,0 +1,15 @@
+.Inputfield.sa-selectize {
+	.selectize-control.single { font-size:0;
+		.selectize-input { background:#f0f3f7 !important; border-color:#b1c3d4 #cbd7e3 #cbd7e3 #cbd7e3; box-shadow:none; border-radius:0;  font-size:16px; line-height:20px; padding-left:10px; padding-right:10px; overflow:visible; /*padding-top:0; padding-bottom:0;*/
+			&.dropdown-active::before { content:none; }
+			&::after { background:url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2224%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23354b60%22%20points%3D%2212%201%209%206%2015%206%22%20%2F%3E%0A%20%20%20%20%3Cpolygon%20fill%3D%22%23354b60%22%20points%3D%2212%2013%209%208%2015%208%22%20%2F%3E%0A%3C%2Fsvg%3E%0A") no-repeat 100% 50%; margin:0; top:0; right:0; border:0; width:24px; height:100%; }
+			.item { position:relative; top:1px; }
+			input { overflow:visible; }
+		}
+		.selectize-dropdown { font-size:16px; border-radius:0; margin-top:0;
+			.option { min-height:28px; }
+			.optgroup .option { padding-left:20px; }
+			.optgroup-header { font-weight:bold; }
+		}
+	}
+}
