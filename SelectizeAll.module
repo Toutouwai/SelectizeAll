@@ -1,6 +1,6 @@
 <?php namespace ProcessWire;
 
-class SelectizeAll extends WireData implements Module {
+class SelectizeAll extends WireData implements Module, ConfigurableModule {
 
 	/**
 	 * Module information
@@ -8,8 +8,8 @@ class SelectizeAll extends WireData implements Module {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Selectize All',
-			'summary' => 'Uses Selectize on all InputfieldSelect fields in the ProcessWire admin.',
-			'version' => '0.1.0',
+			'summary' => 'Enables Selectize on all InputfieldSelect and InputfieldAsmSelect fields in the ProcessWire admin.',
+			'version' => '0.1.1',
 			'author' => 'Robin Sallis',
 			'href' => 'https://github.com/Toutouwai/SelectizeAll',
 			'icon' => 'chevron-down',
@@ -19,22 +19,43 @@ class SelectizeAll extends WireData implements Module {
 	}
 
 	/**
+	 * Construct
+	 */
+	public function __construct() {
+		parent::__construct();
+		$this->allowed_inputfields = ['select', 'asm_select'];
+	}
+
+	/**
 	 * Ready
 	 */
 	public function ready() {
-		// Load Selectize
-		/** @var JqueryUI $jQueryUI */
-		$jQueryUI = $this->wire()->modules->get('JqueryUI');
-		$jQueryUI->use('selectize');
+		$allow_select = in_array('select', $this->allowed_inputfields);
+		$allow_asm_select = in_array('asm_select', $this->allowed_inputfields);
 
-		// Load assets
-		$config = $this->wire()->config;
-		$info = $this->getModuleInfo();
-		$version = $info['version'];
-		$config->styles->add($config->urls->$this . "$this.css?v=$version");
-		$config->scripts->add($config->urls->$this . "$this.js?v=$version");
+		if($allow_select || $allow_asm_select) {
 
-		$this->addHookAfter('InputfieldSelect::renderReadyHook', $this, 'afterSelectRenderReady');
+			// Load Selectize
+			/** @var JqueryUI $jQueryUI */
+			$jQueryUI = $this->wire()->modules->get('JqueryUI');
+			$jQueryUI->use('selectize');
+
+			// Load assets
+			$config = $this->wire()->config;
+			$info = $this->getModuleInfo();
+			$version = $info['version'];
+			$config->styles->add($config->urls->$this . "$this.css?v=$version");
+			$config->scripts->add($config->urls->$this . "SelectizeCustomChange.js?v=$version");
+			$config->scripts->add($config->urls->$this . "$this.js?v=$version");
+
+			// Hooks
+			if($allow_select) {
+				$this->addHookAfter('InputfieldSelect::renderReadyHook', $this, 'afterSelectRenderReady');
+			}
+			if($allow_asm_select) {
+				$this->addHookAfter('InputfieldAsmSelect::renderReadyHook', $this, 'afterAsmRenderReady');
+			}
+		}
 	}
 
 	/**
@@ -47,6 +68,8 @@ class SelectizeAll extends WireData implements Module {
 		$inputfield = $event->object;
 		// Return early if some other inputfield type is extending InputfieldSelect
 		if($inputfield->className !== 'InputfieldSelect') return;
+		// Return early if Selectize not allowed by hookable method
+		if(!$this->allowSelectize($inputfield)) return;
 		// Add class
 		if($inputfield->hasInputfield) {
 			// InputfieldPage using InputfieldSelect
@@ -54,6 +77,56 @@ class SelectizeAll extends WireData implements Module {
 		} else {
 			$inputfield->wrapClass = 'sa-selectize';
 		}
+	}
+
+	/**
+	 * After InputfieldSelect::renderReadyHook
+	 *
+	 * @param HookEvent $event
+	 */
+	protected function afterAsmRenderReady(HookEvent $event) {
+		/** @var InputfieldSelect $inputfield */
+		$inputfield = $event->object;
+		// Return early if some other inputfield type is extending InputfieldAsmSelect
+		if($inputfield->className !== 'InputfieldAsmSelect') return;
+		// Return early if Selectize not allowed by hookable method
+		if(!$this->allowSelectize($inputfield)) return;
+		// Add class
+		if($inputfield->hasInputfield) {
+			// InputfieldPage using InputfieldSelect
+			$inputfield->hasInputfield->wrapClass = 'sa-selectize';
+		} else {
+			$inputfield->wrapClass = 'sa-selectize';
+		}
+	}
+
+	/**
+	 * Allow Selectize to be used on this inputfield?
+	 *
+	 * @param Inputfield $inputfield
+	 * @return bool
+	 */
+	public function ___allowSelectize(Inputfield $inputfield) {
+		return true;
+	}
+
+	/**
+	 * Config inputfields
+	 *
+	 * @param InputfieldWrapper $inputfields
+	 */
+	public function getModuleConfigInputfields($inputfields) {
+		$modules = $this->wire()->modules;
+
+		/** @var InputfieldCheckboxes $f */
+		$f = $modules->get('InputfieldCheckboxes');
+		$f_name = 'allowed_inputfields';
+		$f->name = $f_name;
+		$f->label = $this->_('Activate Selectize for these Inputfield types');
+		$f->addOption('select', 'InputfieldSelect');
+		$f->addOption('asm_select', 'InputfieldAsmSelect');
+		$f->value = $this->$f_name;
+		$inputfields->add($f);
 	}
 
 }

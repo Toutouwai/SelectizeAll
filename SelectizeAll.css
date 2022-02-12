@@ -8,9 +8,7 @@
     font-size: 16px;
     line-height: 20px;
     padding-left: 10px;
-    padding-right: 10px;
-    overflow: visible;
-    /*padding-top:0; padding-bottom:0;*/ }
+    padding-right: 10px; }
     .Inputfield.sa-selectize .selectize-control.single .selectize-input.dropdown-active::before {
       content: none; }
     .Inputfield.sa-selectize .selectize-control.single .selectize-input::after {
@@ -24,8 +22,6 @@
     .Inputfield.sa-selectize .selectize-control.single .selectize-input .item {
       position: relative;
       top: 1px; }
-    .Inputfield.sa-selectize .selectize-control.single .selectize-input input {
-      overflow: visible; }
   .Inputfield.sa-selectize .selectize-control.single .selectize-dropdown {
     font-size: 16px;
     border-radius: 0;
@@ -36,3 +32,17 @@
       padding-left: 20px; }
     .Inputfield.sa-selectize .selectize-control.single .selectize-dropdown .optgroup-header {
       font-weight: bold; }
+  .Inputfield.sa-selectize .selectize-control.single .selectize-dropdown-content {
+    max-height: 300px; }
+    .Inputfield.sa-selectize .selectize-control.single .selectize-dropdown-content .disabled {
+      pointer-events: none;
+      color: #999 !important; }
+.Inputfield.sa-selectize.InputfieldAsmSelect .selectize-control.single, .Inputfield.sa-selectize .InputfieldAsmSelect .selectize-control.single {
+  display: block; }
+  .Inputfield.sa-selectize.InputfieldAsmSelect .selectize-control.single + .asmList, .Inputfield.sa-selectize .InputfieldAsmSelect .selectize-control.single + .asmList {
+    margin-top: 1px; }
+  .Inputfield.sa-selectize.InputfieldAsmSelect .selectize-control.single .selectize-input, .Inputfield.sa-selectize .InputfieldAsmSelect .selectize-control.single .selectize-input {
+    padding-top: 3px;
+    padding-bottom: 3px; }
+    .Inputfield.sa-selectize.InputfieldAsmSelect .selectize-control.single .selectize-input .item, .Inputfield.sa-selectize .InputfieldAsmSelect .selectize-control.single .selectize-input .item {
+      display: none; }
