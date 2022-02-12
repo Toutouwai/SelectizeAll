@@ -4,6 +4,8 @@ Enables Selectize on all InputfieldSelect and InputfieldAsmSelect fields in the 
 
 The module activates Selectize on the `<select>` element when it is focused, and destroys Selectize when the element is blurred. This allows Selectize to work on selects where the options are changed dynamically after page load depending on other field values, e.g. the "Select File" field in the CKEditor link modal or a dependent select in Page Edit.
 
+Only AdminThemeUikit is tested and supported.
+
 ![selectize-select](https://user-images.githubusercontent.com/1538852/153692133-645ed871-6036-49cc-b6f4-3f3bcfe6049a.gif)
 
 ![selectize-asm](https://user-images.githubusercontent.com/1538852/153692139-9a648182-9894-49f8-92c9-117520160998.gif)
