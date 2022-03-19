@@ -27,3 +27,9 @@ $wire->addHookAfter('SelectizeAll::allowSelectize', function(HookEvent $event) {
     if($inputfield->name === 'template') $event->return = false;
 });
 ```
+
+If you are creating an inputfield via the API (e.g. in a custom module) you can also disable SelectizeAll for the inputfield by giving it a "no-selectize" class, e.g.
+
+```php
+$inputfield->addClass('no-selectize');
+```

@@ -9,7 +9,7 @@ class SelectizeAll extends WireData implements Module, ConfigurableModule {
 		return array(
 			'title' => 'Selectize All',
 			'summary' => 'Enables Selectize on all InputfieldSelect and InputfieldAsmSelect fields in the ProcessWire admin.',
-			'version' => '0.1.1',
+			'version' => '0.1.2',
 			'author' => 'Robin Sallis',
 			'href' => 'https://github.com/Toutouwai/SelectizeAll',
 			'icon' => 'chevron-down',
@@ -50,10 +50,10 @@ class SelectizeAll extends WireData implements Module, ConfigurableModule {
 
 			// Hooks
 			if($allow_select) {
-				$this->addHookAfter('InputfieldSelect::renderReadyHook', $this, 'afterSelectRenderReady');
+				$this->addHookAfter('InputfieldSelect::renderReadyHook', $this, 'afterSelectRenderReady', [ 'priority' => 200 ]);
 			}
 			if($allow_asm_select) {
-				$this->addHookAfter('InputfieldAsmSelect::renderReadyHook', $this, 'afterAsmRenderReady');
+				$this->addHookAfter('InputfieldAsmSelect::renderReadyHook', $this, 'afterAsmRenderReady', [ 'priority' => 200 ]);
 			}
 		}
 	}
@@ -107,6 +107,7 @@ class SelectizeAll extends WireData implements Module, ConfigurableModule {
 	 * @return bool
 	 */
 	public function ___allowSelectize(Inputfield $inputfield) {
+		if($inputfield->hasClass('no-selectize')) return false;
 		return true;
 	}
 
