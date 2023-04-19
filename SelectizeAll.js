@@ -74,7 +74,7 @@
 							$target.addClass(pw_class);
 							$target.val(value);
 							// Only trigger change on AsmSelect if value was not empty
-							if(!is_asm || value) $target.change();
+							if(!is_asm || value) $target.trigger('change');
 						}, 50);
 					},
 					render: {

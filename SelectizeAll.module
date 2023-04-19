@@ -9,7 +9,7 @@ class SelectizeAll extends WireData implements Module, ConfigurableModule {
 		return array(
 			'title' => 'Selectize All',
 			'summary' => 'Enables Selectize on all InputfieldSelect and InputfieldAsmSelect fields in the ProcessWire admin.',
-			'version' => '0.1.2',
+			'version' => '0.1.3',
 			'author' => 'Robin Sallis',
 			'href' => 'https://github.com/Toutouwai/SelectizeAll',
 			'icon' => 'chevron-down',
